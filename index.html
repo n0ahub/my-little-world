@@ -287,6 +287,30 @@
       const page = pages[current];
       alert(page.rightTitle + " のページは、これから作っていこう！");
     }
+    
+  // スマホのスワイプ操作でコンテンツを切り替える
+  let touchStartY = 0;
+
+  document.querySelector("main").addEventListener("touchstart", (event) => {
+    touchStartY = event.changedTouches[0].screenY;
+  }, { passive: true });
+
+  document.querySelector("main").addEventListener("touchend", (event) => {
+    const touchEndY = event.changedTouches[0].screenY;
+    const distance = touchStartY - touchEndY;
+
+    // 指が50px以上動いたときだけ切り替える
+    if (Math.abs(distance) < 50) return;
+
+    const now = Date.now();
+    if (now - lastWheel < 700) return;
+
+    lastWheel = now;
+
+    // 上にスワイプ → 次へ、下にスワイプ → 前へ
+    showPage(current + (distance > 0 ? 1 : -1));
+  }, { passive: true });
+
 
     document.getElementById("character").addEventListener("click", selectPage);
     document.getElementById("select-button").addEventListener("click", selectPage);

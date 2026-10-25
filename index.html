@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Little World</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #111827;
+      color: #f9fafb;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 24px;
+      text-align: center;
+      letter-spacing: 3px;
+      border-bottom: 1px solid #374151;
+    }
+
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      align-items: center;
+      gap: 16px;
+      max-width: 1100px;
+      width: 100%;
+      margin: auto;
+      padding: 24px;
+    }
+
+    .side { line-height: 1.9; }
+    .side h2 { color: #93c5fd; font-size: 1.1rem; }
+    .side p { color: #d1d5db; font-size: 0.95rem; }
+
+    #character {
+      font-size: clamp(90px, 15vw, 160px);
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.35s, opacity 0.25s;
+    }
+
+    #character:hover { transform: scale(1.08); }
+
+    #character.change {
+      transform: rotateY(180deg) scale(0.8);
+      opacity: 0.3;
+    }
+
+    #hint {
+      text-align: center;
+      color: #9ca3af;
+      padding: 20px;
+      font-size: 0.85rem;
+    }
+
+    button {
+      background: #2563eb;
+      color: white;
+      border: 0;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 650px) {
+      main {
+        grid-template-columns: 1fr 1fr;
+      }
+      #character {
+        grid-column: 1 / -1;
+        grid-row: 1;
+      }
+      .side { padding: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>MY LITTLE WORLD</h1>
+    <p>小さな冒険へようこそ</p>
+  </header>
+
+  <main>
+    <section class="side">
+      <h2 id="left-title">ABOUT ME</h2>
+      <div id="left-content">
+        <p>こんにちは！</p>
+        <p>このサイトの管理人です。</p>
+        <p>好きなことを少しずつ発信します。</p>
+      </div>
+    </section>
+
+    <div id="character" title="クリックして詳しく見る">🧑🏻</div>
+
+    <section class="side">
+      <h2 id="right-title">このサイトについて</h2>
+      <div id="right-content">
+        <p>ここは自分だけの小さな世界。</p>
+        <p>スクロールして冒険してみよう。</p>
+      </div>
+      <p><button id="select-button">詳しく見る →</button></p>
+    </section>
+  </main>
+
+  <div id="hint">マウスホイールでコンテンツを切り替える ↑ ↓</div>
+
+  <script>
+    const pages = [
+      {
+        character: "🧑🏻",
+        leftTitle: "ABOUT ME",
+        left: "<p>こんにちは！</p><p>このサイトの管理人です。</p><p>好きなことを発信します。</p>",
+        rightTitle: "このサイトについて",
+        right: "<p>ここは自分だけの小さな世界。</p><p>スクロールして冒険しよう。</p>"
+      },
+      {
+        character: "👨🏻‍🎓",
+        leftTitle: "LATEST POSTS",
+        left: "<p>01. Web制作を始めた</p><p>02. 便利なツールを考える</p><p>03. 今日の制作メモ</p>",
+        rightTitle: "BLOG",
+        right: "<p>日々の学びや発見を記事にしています。</p><p>気になる記事を選んでみよう。</p>"
+      },
+      {
+        character: "👨🏻‍💻",
+        leftTitle: "MY PROJECTS",
+        left: "<p>01. 小さな計算ツール</p><p>02. 自分用の便利ツール</p><p>03. 制作中のアイデア</p>",
+        rightTitle: "TOOLS",
+        right: "<p>作ってみたツールを紹介します。</p><p>これから少しずつ増やす予定です。</p>"
+      }
+    ];
+
+    let current = 0;
+    let lastWheel = 0;
+
+    function showPage(index) {
+      current = (index + pages.length) % pages.length;
+      const page = pages[current];
+
+      const character = document.getElementById("character");
+      character.classList.add("change");
+
+      setTimeout(() => {
+        character.textContent = page.character;
+        document.getElementById("left-title").textContent = page.leftTitle;
+        document.getElementById("left-content").innerHTML = page.left;
+        document.getElementById("right-title").textContent = page.rightTitle;
+        document.getElementById("right-content").innerHTML = page.right;
+        character.classList.remove("change");
+      }, 150);
+    }
+
+    window.addEventListener("wheel", (event) => {
+      const now = Date.now();
+      if (now - lastWheel < 700) return;
+      if (Math.abs(event.deltaY) < 10) return;
+
+      lastWheel = now;
+      showPage(current + (event.deltaY > 0 ? 1 : -1));
+    }, { passive: true });
+
+    function selectPage() {
+      const page = pages[current];
+      alert(page.rightTitle + " のページは、これから作っていこう！");
+    }
+
+    document.getElementById("character").addEventListener("click", selectPage);
+    document.getElementById("select-button").addEventListener("click", selectPage);
+  </script>
+</body>
+</html>

@@ -40,20 +40,53 @@
     .side h2 { color: #93c5fd; font-size: 1.1rem; }
     .side p { color: #d1d5db; font-size: 0.95rem; }
 
-    #character {
-      font-size: clamp(90px, 15vw, 160px);
-      text-align: center;
-      cursor: pointer;
-      user-select: none;
-      transition: transform 0.35s, opacity 0.25s;
-    }
+/* キャラクターと土台をまとめるエリア */
+.character-stage {
+  position: relative;
+  width: 100%;
+  height: 440px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  isolation: isolate;
+}
 
-    #character:hover { transform: scale(1.08); }
+/* 固定する土台の画像 */
+  .platform-image {
+    position: absolute;
+    z-index: 0;
+    width: 130%;
+    max-width: none;
+    height: auto;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
 
-    #character.change {
-      transform: rotateY(180deg) scale(0.8);
-      opacity: 0.3;
-    }
+/* 切り替わるキャラクター */
+  #character {
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    bottom: 100px;
+    transform: translateX(-50%);
+    width: auto;
+    height: 280px;
+    max-width: 60%;
+    object-fit: contain;
+    cursor: pointer;
+    transition: opacity 0.25s, transform 0.35s;
+  }
+
+  #character:hover {
+    transform: translateX(-50%) scale(1.05);
+  }
+
+  #character.change {
+    transform: translateX(-50%) scale(0.85);
+    opacity: 0;
+  }
 
     #hint {
       text-align: center;
@@ -99,7 +132,25 @@
       </div>
     </section>
 
-    <div id="character" title="クリックして詳しく見る">🧑🏻</div>
+
+  <div class="character-stage">
+    <img
+      src="platform.png"
+      class="platform-image"
+      alt=""
+    >
+
+  <img
+    id="character"
+    class="stage-character"
+    src="このサイトについて.png"
+    alt="キャラクター"
+  >
+</div>
+
+  <div id="character" title="クリックして詳しく見る"></div>
+
+</div>
 
     <section class="side">
       <h2 id="right-title">このサイトについて</h2>
@@ -115,29 +166,28 @@
 
   <script>
     const pages = [
-      {
-        character: "🧑🏻",
-        leftTitle: "ABOUT ME",
-        left: "<p>こんにちは！</p><p>このサイトの管理人です。</p><p>好きなことを発信してます。</p>",
-        rightTitle: "このサイトについて",
-        right: "<p>ここは自分だけの小さな世界。</p><p>スクロールして冒険しよう。</p>"
-      },
-      {
-        character: "👨🏻‍🎓",
-        leftTitle: "LATEST POSTS",
-        left: "<p>01. Web制作を始めた</p><p>02. 便利なツールを考える</p><p>03. 今日の制作メモ</p>",
-        rightTitle: "BLOG",
-        right: "<p>日々の学びや発見を記事にしています。</p><p>気になる記事を選んでみよう。</p>"
-      },
-      {
-        character: "👨🏻‍💻",
-        leftTitle: "MY PROJECTS",
-        left: "<p>01. 小さな計算ツール</p><p>02. 自分用の便利ツール</p><p>03. 制作中のアイデア</p>",
-        rightTitle: "TOOLS",
-        right: "<p>作ってみたツールを紹介します。</p><p>これから少しずつ増やす予定です。</p>"
-      }
-    ];
-
+  {
+    character: "このサイトについて.png",
+    leftTitle: "ABOUT ME",
+    left: "<p>こんにちは！</p><p>このサイトの管理人です。</p><p>好きなことを発信してます。</p>",
+    rightTitle: "このサイトについて",
+    right: "<p>ここは自分だけの小さな世界。</p><p>スクロールして冒険しよう。</p>"
+  },
+  {
+    character: "blog.png",
+    leftTitle: "LATEST POSTS",
+    left: "<p>01. Web制作を始めた</p><p>02. 便利なツールを考える</p><p>03. 今日の制作メモ</p>",
+    rightTitle: "BLOG",
+    right: "<p>日々の学びや発見を記事にしています。</p><p>気になる記事を選んでみよう。</p>"
+  },
+  {
+    character: "tool.png",
+    leftTitle: "MY PROJECTS",
+    left: "<p>01. 小さな計算ツール</p><p>02. 自分用の便利ツール</p><p>03. 制作中のアイデア</p>",
+    rightTitle: "TOOLS",
+    right: "<p>作ってみたツールを紹介します。</p><p>これから少しずつ増やす予定です。</p>"
+  }
+];
     let current = 0;
     let lastWheel = 0;
 
@@ -149,7 +199,7 @@
       character.classList.add("change");
 
       setTimeout(() => {
-        character.textContent = page.character;
+        character.src = page.character;
         document.getElementById("left-title").textContent = page.leftTitle;
         document.getElementById("left-content").innerHTML = page.left;
         document.getElementById("right-title").textContent = page.rightTitle;

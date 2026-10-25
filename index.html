@@ -287,28 +287,36 @@
       const page = pages[current];
       alert(page.rightTitle + " のページは、これから作っていこう！");
     }
-    
-  // スマホのスワイプ操作でコンテンツを切り替える
+
+  // スマホの横スワイプでコンテンツを切り替える
+  let touchStartX = 0;
   let touchStartY = 0;
 
-  document.querySelector("main").addEventListener("touchstart", (event) => {
+  const stage = document.querySelector(".character-stage");
+
+  stage.addEventListener("touchstart", (event) => {
+    touchStartX = event.changedTouches[0].screenX;
     touchStartY = event.changedTouches[0].screenY;
   }, { passive: true });
 
-  document.querySelector("main").addEventListener("touchend", (event) => {
+  stage.addEventListener("touchend", (event) => {
+    const touchEndX = event.changedTouches[0].screenX;
     const touchEndY = event.changedTouches[0].screenY;
-    const distance = touchStartY - touchEndY;
 
-    // 指が50px以上動いたときだけ切り替える
-    if (Math.abs(distance) < 50) return;
+    const distanceX = touchStartX - touchEndX;
+    const distanceY = touchStartY - touchEndY;
+
+    // 横方向に50px以上動き、縦方向より大きいときだけ反応
+    if (Math.abs(distanceX) < 50) return;
+    if (Math.abs(distanceX) <= Math.abs(distanceY)) return;
 
     const now = Date.now();
     if (now - lastWheel < 700) return;
 
     lastWheel = now;
 
-    // 上にスワイプ → 次へ、下にスワイプ → 前へ
-    showPage(current + (distance > 0 ? 1 : -1));
+    // 左スワイプ → 次へ、右スワイプ → 前へ
+    showPage(current + (distanceX > 0 ? 1 : -1));
   }, { passive: true });
 
 

@@ -26,53 +26,65 @@
 
   /* PC版：左右の文章と中央画像の配置 */
 
-  main {
-    /* 左右の文章の上下位置 */
-    --left-position: 0px;
-    --right-position: 0px;
 
-    /* 左右の文章の文字揃え */
-    --left-align: center;
-    --right-align: center;
+main {
+  /* x:20px(右へ),-20px(左へ) y:20px(下へ),-20px(上へ) */
+  /* 左側の文章の位置 */
+  --left-position-x: 50px;
+  --left-position-y: 0px;
 
-    /* 横幅の設定 */
-    --side-width: 280px;
-    --stage-width: 440px;
+  /* 右側の文章の位置 */
+  --right-position-x: 0px;
+  --right-position-y: 0px;
 
-    flex: 1;
-    display: grid;
-    grid-template-columns:
-      minmax(0, var(--side-width))
-      minmax(0, var(--stage-width))
-      minmax(0, var(--side-width));
-    justify-content: center;
-    align-items: center;
-    gap: 24px;
-    max-width: 1200px;
-    width: 100%;
-    margin: auto;
-    padding: 24px;
-   }
+  /* 文字揃え：left / center / right */
+  --left-align: left;
+  --right-align: left;
+
+  /* 横幅の設定 */
+  --side-width: 280px;
+  --stage-width: 440px;
+
+  flex: 1;
+  display: grid;
+  grid-template-columns:
+    minmax(0, var(--side-width))
+    minmax(0, var(--stage-width))
+    minmax(0, var(--side-width));
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  max-width: 1200px;
+  width: 100%;
+  margin: auto;
+  padding: 24px;
+}
 
 
 /* 左右の文章の基本設定 */
-  .side {
-    min-width: 0;
-    line-height: 1.9;
-    overflow-wrap: anywhere;
-  }
+.side {
+  min-width: 0;
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+}
 
-  /* 左側の文章 */
-  main > .side:first-child {
-    transform: translateY(var(--left-position));
-    text-align: var(--left-align);
-  }
+/* 左側の文章 */
+main > .side:first-child {
+  transform: translate(
+    var(--left-position-x),
+    var(--left-position-y)
+  );
+  text-align: var(--left-align);
+}
 
-  /* 右側の文章 */
-  main > .side:last-child {
-    transform: translateY(var(--right-position));
-    text-align: var(--right-align);
-  }
+/* 右側の文章 */
+main > .side:last-child {
+  transform: translate(
+    var(--right-position-x),
+    var(--right-position-y)
+  );
+  text-align: var(--right-align);
+}
   
   
   /* 見出しの装飾 */
@@ -102,7 +114,7 @@
   .platform-image {
     position: absolute;
     z-index: 0;
-    width: 130%;
+    width: 100%;
     max-width: none;
     height: auto;
     left: 50%;
@@ -254,7 +266,7 @@ main {
       <div id="left-content">
         <p>こんにちは！</p>
         <p>このサイトの管理人です。</p>
-        <p>好きなことを少しずつ発信します。</p>
+        <p>好きなことを発信してます。</p>
       </div>
     </section>
 
@@ -274,9 +286,6 @@ main {
   >
 </div>
 
-  <div id="character" title="クリックして詳しく見る"></div>
-
-</div>
 
     <section class="side">
       <h2 id="right-title">このサイトについて</h2>

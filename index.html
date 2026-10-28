@@ -24,21 +24,68 @@
       border-bottom: 1px solid #374151;
     }
 
-    main {
-      flex: 1;
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      align-items: center;
-      gap: 16px;
-      max-width: 1100px;
-      width: 100%;
-      margin: auto;
-      padding: 24px;
-    }
+  /* PC版：左右の文章と中央画像の配置 */
 
-    .side { line-height: 1.9; }
-    .side h2 { color: #93c5fd; font-size: 1.1rem; }
-    .side p { color: #d1d5db; font-size: 0.95rem; }
+  main {
+    /* 左右の文章の上下位置 */
+    --left-position: 0px;
+    --right-position: 0px;
+
+    /* 左右の文章の文字揃え */
+    --left-align: center;
+    --right-align: center;
+
+    /* 横幅の設定 */
+    --side-width: 280px;
+    --stage-width: 440px;
+
+    flex: 1;
+    display: grid;
+    grid-template-columns:
+      minmax(0, var(--side-width))
+      minmax(0, var(--stage-width))
+      minmax(0, var(--side-width));
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    max-width: 1200px;
+    width: 100%;
+    margin: auto;
+    padding: 24px;
+   }
+
+
+/* 左右の文章の基本設定 */
+  .side {
+    min-width: 0;
+    line-height: 1.9;
+    overflow-wrap: anywhere;
+  }
+
+  /* 左側の文章 */
+  main > .side:first-child {
+    transform: translateY(var(--left-position));
+    text-align: var(--left-align);
+  }
+
+  /* 右側の文章 */
+  main > .side:last-child {
+    transform: translateY(var(--right-position));
+    text-align: var(--right-align);
+  }
+  
+  
+  /* 見出しの装飾 */
+  .side h2 {
+    color: #93c5fd;
+    font-size: 1.1rem;
+  }
+
+  /* 本文の装飾 */
+  .side p {
+    color: #d1d5db;
+    font-size: 0.95rem;
+  }
 
 /* キャラクターと土台をまとめるエリア */
 .character-stage {

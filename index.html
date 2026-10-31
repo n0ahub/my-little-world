@@ -261,15 +261,14 @@ main {
   </header>
 
   <main>
-    <section class="side">
-      <h2 id="left-title">ABOUT ME</h2>
-      <div id="left-content">
-        <p>こんにちは！</p>
-        <p>このサイトの管理人です。</p>
-        <p>好きなことを発信してます。</p>
-      </div>
-    </section>
-
+<section class="side">
+  <div id="left-content">
+    <h2>ABOUT ME</h2>
+    <p>こんにちは！</p>
+    <p>このサイトの管理人です。</p>
+    <p>好きなことを発信してます。</p>
+  </div>
+</section>
 
   <div class="character-stage">
     <img
@@ -286,62 +285,112 @@ main {
   >
 </div>
 
-
-    <section class="side">
-      <h2 id="right-title">このサイトについて</h2>
-      <div id="right-content">
-        <p>ここは自分だけの小さな世界。</p>
-        <p>スクロールして冒険してみよう。</p>
-      </div>
-      <p><button id="select-button">詳しく見る →</button></p>
-    </section>
+<section class="side">
+  <div id="right-content">
+    <h2>このサイトについて</h2>
+    <p>ここは自分だけの小さな世界。</p>
+    <p>スクロールして冒険してみよう。</p>
+  </div>
+  <p><button id="select-button">詳しく見る →</button></p>
+</section>
   </main>
+
+<!-- ABOUT ME テンプレート -->
+<template id="template-about">
+  <div class="left-content">
+    <h2>ABOUT ME</h2>
+    <p>こんにちは！</p>
+    <p>このサイトの管理人です。</p>
+    <p>好きなことを発信してます。</p>
+  </div>
+
+  <div class="right-content">
+    <h2>このサイトについて</h2>
+    <p>ここは自分だけの小さな世界。</p>
+    <p>スクロールして冒険しよう。</p>
+  </div>
+</template>
+
+<!-- BLOG テンプレート -->
+<template id="template-blog">
+  <div class="left-content">
+    <h2>LATEST POSTS</h2>
+    <p><a href="articles/first-post.html">01. Web制作を始めた</a></p>
+    <p>02. 便利なツールを考える</p>
+    <p>03. 今日の制作メモ</p>
+  </div>
+
+  <div class="right-content">
+    <h2>BLOG</h2>
+    <p>日々の学びや発見を記事にしています。</p>
+    <p>気になる記事を選んでみよう。</p>
+  </div>
+</template>
+
+<!-- TOOLS テンプレート -->
+<template id="template-tools">
+  <div class="left-content">
+    <h2>MY PROJECTS</h2>
+    <p>01. 小さな計算ツール</p>
+    <p>02. 自分用の便利ツール</p>
+    <p>03. 制作中のアイデア</p>
+  </div>
+
+  <div class="right-content">
+    <h2>TOOLS</h2>
+    <p>作ってみたツールを紹介します。</p>
+    <p>これから少しずつ増やす予定です。</p>
+  </div>
+</template>
 
   <div id="hint">マウスホイールでコンテンツを切り替える ↑ ↓</div>
 
   <script>
-    const pages = [
+const pages = [
   {
     character: "このサイトについて.png",
-    leftTitle: "ABOUT ME",
-    left: "<p>こんにちは！</p><p>このサイトの管理人です。</p><p>好きなことを発信してます。</p>",
-    rightTitle: "このサイトについて",
-    right: "<p>ここは自分だけの小さな世界。</p><p>スクロールして冒険しよう。</p>"
+    template: "template-about",
+    title: "このサイトについて"
   },
   {
     character: "blog.png",
-    leftTitle: "LATEST POSTS",
-    left: "<p><a href="articles/first-post.html">01. 未経験から副業を始めてみる</a></p><p>02. 便利なツールを考える</p><p>03. 今日の制作メモ</p>",
-    rightTitle: "BLOG",
-    right: "<p>日々の学びや発見を記事にしています。</p><p>気になる記事を選んでみよう。</p>"
+    template: "template-blog",
+    title: "BLOG"
   },
   {
     character: "tool.png",
-    leftTitle: "MY PROJECTS",
-    left: "<p>01. 小さな計算ツール</p><p>02. 自分用の便利ツール</p><p>03. 制作中のアイデア</p>",
-    rightTitle: "TOOLS",
-    right: "<p>作ってみたツールを紹介します。</p><p>これから少しずつ増やす予定です。</p>"
+    template: "template-tools",
+    title: "TOOLS"
   }
-];
+]; 
     let current = 0;
     let lastWheel = 0;
 
-    function showPage(index) {
-      current = (index + pages.length) % pages.length;
-      const page = pages[current];
+function showPage(index) {
+  current = (index + pages.length) % pages.length;
+  const page = pages[current];
 
-      const character = document.getElementById("character");
-      character.classList.add("change");
+  const character = document.getElementById("character");
+  character.classList.add("change");
 
-      setTimeout(() => {
-        character.src = page.character;
-        document.getElementById("left-title").textContent = page.leftTitle;
-        document.getElementById("left-content").innerHTML = page.left;
-        document.getElementById("right-title").textContent = page.rightTitle;
-        document.getElementById("right-content").innerHTML = page.right;
-        character.classList.remove("change");
-      }, 150);
-    }
+  setTimeout(() => {
+    // キャラクター画像を変更
+    character.src = page.character;
+
+    // テンプレートを取得
+    const template = document.getElementById(page.template);
+
+    // 左右のコンテンツを取得
+    const leftContent = template.content.querySelector(".left-content");
+    const rightContent = template.content.querySelector(".right-content");
+
+    // 画面に反映
+    document.getElementById("left-content").innerHTML = leftContent.innerHTML;
+    document.getElementById("right-content").innerHTML = rightContent.innerHTML;
+
+    character.classList.remove("change");
+  }, 150);
+}
 
     window.addEventListener("wheel", (event) => {
       const now = Date.now();
@@ -352,10 +401,10 @@ main {
       showPage(current + (event.deltaY > 0 ? 1 : -1));
     }, { passive: true });
 
-    function selectPage() {
-      const page = pages[current];
-      alert(page.rightTitle + " のページは、これから作っていこう！");
-    }
+function selectPage() {
+  const page = pages[current];
+  alert(page.title + " のページは、これから作っていこう！");
+}
 
   // スマホの横スワイプでコンテンツを切り替える
   let touchStartX = 0;

@@ -98,6 +98,17 @@ main > .side:last-child {
     color: #d1d5db;
     font-size: 0.95rem;
   }
+  
+  /* ハイパーリンクの色 */
+.side a {
+  color: #93c5fd;
+  text-decoration: underline;
+}
+
+/* マウスを乗せたとき */
+.side a:hover {
+  color: #bfdbfe;
+}
 
 /* キャラクターと土台をまとめるエリア */
 .character-stage {
@@ -321,7 +332,7 @@ main {
 <template id="template-blog">
   <div class="left-content">
     <h2>LATEST POSTS</h2>
-    <p><a href="articles/first-post.html">01. Web制作を始めた</a></p>
+    <p>01. <a href="articles/first-post.html">Web制作を始めた</a></p>
     <p>02. 便利なツールを考える</p>
     <p>03. 今日の制作メモ</p>
   </div>
@@ -337,7 +348,7 @@ main {
 <template id="template-tools">
   <div class="left-content">
     <h2>MY PROJECTS</h2>
-    <p>01. 小さな計算ツール</p>
+    <p>01. <a href="tool/article_editor.html">HTML記事書き出しツール</a></p>
     <p>02. 自分用の便利ツール</p>
     <p>03. 制作中のアイデア</p>
   </div>

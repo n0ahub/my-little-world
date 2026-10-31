@@ -236,7 +236,13 @@ main {
     overflow-wrap: anywhere;
     margin-top: 0px;
   }
-
+  
+    /* スマホではPC版の位置調整を解除 */
+    main > .side:first-child,
+    main > .side:last-child {
+    transform: none;
+    }
+  
   .side h2 {
     font-size: 1.15rem;
   }
